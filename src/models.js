@@ -1287,10 +1287,13 @@ module.exports = ({ cooler, isPublic }) => {
         })
       );
 
+      const basicSocialFilter = await socialFilter();
+
       const messages = await new Promise((resolve, reject) => {
         pull(
           source,
           pull.filter((message) => isNotPrivate(message) && hasNoRoot(message)),
+          basicSocialFilter,
           pull.take(maxMessages),
           pullParallelMap(async (message, cb) => {
             // Retrieve a preview of this post's comments / thread
